@@ -1,0 +1,2 @@
+String now():
+    JAVA de.ul.generator.helper.GeneratorHelper.now();

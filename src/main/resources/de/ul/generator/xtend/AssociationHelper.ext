@@ -1,0 +1,66 @@
+extension xtend::Misc;
+extension xtend::DataType;
+extension xtend::Properties;
+extension xtend::Helper;
+extension org::eclipse::xtend::util::stdlib::io;
+
+Boolean isOutgoing(uml::Property property) :
+	property.association.memberEnd.get(0).name.toFirstUpper() == property.class.name.toFirstUpper() ? true : false;
+
+Boolean isAssociation(uml::Property property) :
+    property.association != null ? true : false;
+
+Boolean isToManyAssociation(uml::Property property) :
+    !isAssociation(property) ? false :
+property.association.memberEnd.isToMany();
+
+Boolean isToOneAssociation(uml::Property property) :
+    !isAssociation(property) ? false :
+property.association.memberEnd.isToOne();
+
+Boolean isManyToXAssociation(uml::Property property) :
+    !isAssociation(property) ? false :
+property.association.memberEnd.isManyToX();
+
+Boolean isOneToXAssociation(uml::Property property) :
+    !isAssociation(property) ? false :
+property.association.memberEnd.isOneToX();
+
+
+//Boolean hasAssociations(uml::Class clazz) :
+//    clazz.getAllProperties().select(e|e.isAssociation()).size > 0;
+
+Boolean isOneToOneAssociation(uml::Property property) :
+    !isAssociation(property) ?
+        false :
+
+(property.association.ownedEnd.select(e|e.type.name!=property.name));
+
+
+Boolean isOneToOne(List[uml::Property] props) :
+     props.get(0).upperBound() == 1 && props.get(1).upperBound() == 1 ? true
+: false;
+
+Boolean isManyToMany(List[uml::Property] props) :
+     (props.get(0).upperBound() == -1 || props.get(0).upperBound() > 1) &&
+(props.get(1).upperBound() == -1 || props.get(1).upperBound() > 1) ? true :
+false;
+
+Boolean isOneToMany(List[uml::Property] props) :
+     props.get(0).upperBound() == 1 && (props.get(1).upperBound() == -1 ||
+	props.get(1).upperBound() > 1) ? (debug("onetomany " + props) -> true) : (debug("not onetomany " + props) -> false);
+
+Boolean isManyToOne(List[uml::Property] props) :
+	props.get(0).upperBound() == -1 && props.get(1).upperBound() == 1 ? true : false;
+
+Boolean isToMany(List[uml::Property] props) :
+    props.isOneToMany() || props.isManyToMany();
+
+Boolean isToOne(List[uml::Property] props) :
+    props.isManyToOne() || props.isOneToOne();
+
+Boolean isManyToX(List[uml::Property] props):
+    props.isManyToMany() || props.isManyToOne();
+
+Boolean isOneToX(List[uml::Property] props):
+    props.isOneToMany() || props.isOneToOne();

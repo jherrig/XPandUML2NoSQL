@@ -1,0 +1,219 @@
+«EXTENSION xtend::Names»
+«EXTENSION xtend::Helper»
+«EXTENSION xtend::DataType»
+«EXTENSION xtend::Properties»
+
+/**
+*	Creates all attributes needed for the associations of the given uml::Classifier
+*/
+«DEFINE attribute FOR uml::Classifier»
+	«FOREACH AllAssociations().typeSelect(uml::Association) AS ass»
+		«FOREACH ass.ownedEnd.select(e|e.type.name!=name) AS a»
+			«EXPAND field FOR a»
+		«ENDFOREACH»		
+	«ENDFOREACH»
+«ENDDEFINE»
+
+/**
+*	Creates all geter/setter needed for the associations of the given uml::Classifier
+*/
+«DEFINE accessors FOR uml::Classifier»
+	«FOREACH AllAssociations().typeSelect(uml::Association) AS ass»
+		«FOREACH ass.ownedEnd.select(e|e.type.name!=name) AS a»
+			«EXPAND accessors FOR a»
+		«ENDFOREACH»		
+	«ENDFOREACH»
+«ENDDEFINE»
+
+/**
+*	Creates a field for the given uml::Property derived by the association
+*/
+«DEFINE field FOR uml::Property»
+	 «IF isNavigable()»
+	 	«IF getUpper() == -1»
+	 		private «getPropertyType()» «name» = «getPropertyTypeImpl()»;
+	 	«ELSE»
+	 		private «type.fqName()» «name» = null;
+	 	«ENDIF»
+	 «ENDIF»
+«ENDDEFINE»
+
+/**
+*	Creates a getter/setter pair for the given uml::Property derived by the association
+*/
+«DEFINE accessors FOR uml::Property»
+	«IF isNavigable()»
+		«IF getUpper() == -1»
+			«EXPAND associationCollectionGetter»
+			
+			«EXPAND associationCollectionSetter»
+			
+			«IF getGenerateAdditionalCollectionMethods()»
+				«EXPAND associationCollectionAdder»
+				
+				«EXPAND associationCollectionRemoveFrom»
+				
+				«EXPAND associationCollectionRemoveAll»
+			«ENDIF»
+		«ELSEIF getUpper() == 1»
+			«EXPAND associationGetter»
+ 		
+ 			«EXPAND associationSetter»
+		«ENDIF»
+	«ENDIF»	
+«ENDDEFINE»
+
+/**
+*	Creates a getter/setter pair for the given uml::Property derived by the association for
+*	an interface
+*/
+«DEFINE accessorsInterface FOR uml::Property»
+	«IF isNavigable()»
+		«IF getUpper() == -1»
+			«EXPAND associationCollectionGetterInterface»
+			
+			«EXPAND associationCollectionSetterInterface»
+		
+			«IF getGenerateAdditionalCollectionMethods()»
+				«EXPAND associationCollectionAdderInterface»
+				
+				«EXPAND associationCollectionRemoveFromInterface»
+				
+				«EXPAND associationCollectionRemoveAllInterface»
+			«ENDIF»
+		«ELSEIF getUpper() == 1»
+			«EXPAND associationGetterInterface»
+ 		
+ 			«EXPAND associationSetterInterface»
+		«ENDIF»
+	«ENDIF»	
+«ENDDEFINE»
+
+
+/**
+* Creates the Getter-Method for a toMany association (for an interface)
+*/
+«DEFINE associationCollectionGetterInterface FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationGetter(this) FOR association»
+	public «getPropertyType()» «toGetter()»();
+«ENDDEFINE»
+
+/**
+* Creates the Setter-Method for a toMany association (for an interface)
+*/
+«DEFINE associationCollectionSetterInterface FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationSetter(this) FOR association»
+	public void «toSetter()»(«getPropertyType()» «type.name.toFirstLower()»);
+«ENDDEFINE»
+
+/**
+* Creates the Adder-Method for a toMany association (for an interface)
+*/
+«DEFINE associationCollectionAdderInterface FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationAdder(this) FOR association»
+	public void addTo«name.toFirstUpper()»(«type.fqName()» «type.name.toFirstLower()»);
+«ENDDEFINE»
+
+/**
+* Creates the RemoveFrom-Method for a toMany association (for an interface)
+*/
+«DEFINE associationCollectionRemoveFromInterface FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationRemoveFrom(this) FOR association»
+	public void removeFrom«name.toFirstUpper()»(«type.fqName()» «type.name.toFirstLower()»);
+«ENDDEFINE»
+
+/**
+* Creates the RemoveAll-Method for a toMany association (for an interface)
+*/
+«DEFINE associationCollectionRemoveAllInterface FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationRemoveAll(this) FOR association»
+	public void removeAllFrom«name.toFirstUpper()»();
+«ENDDEFINE»
+
+/**
+* Creates the Getter-Method for a 1-1 association (for an interface)
+*/
+«DEFINE associationGetterInterface FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationGetter(this) FOR association»
+	public «type.fqName()» «toGetter()»();
+«ENDDEFINE»
+
+/**
+* Creates the Setter-Method for a 1-1 association (for an interface)
+*/
+«DEFINE associationSetterInterface FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationSetter(this) FOR association»
+	public void «toSetter()»(«type.fqName()» «name»);
+«ENDDEFINE»
+
+
+
+/**
+* Creates the Getter-Method for a toMany association
+*/
+«DEFINE associationCollectionGetter FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationGetter(this) FOR association»
+	public «getPropertyType()» «toGetter()»(){
+		return «name»;
+	}
+«ENDDEFINE»
+
+/**
+* Creates the Setter-Method for a toMany association
+*/
+«DEFINE associationCollectionSetter FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationSetter(this) FOR association»
+	public void «toSetter()»(«getPropertyType()» «type.name.toFirstLower()»){
+		this.«name» = «type.name.toFirstLower()»;
+	}
+«ENDDEFINE»
+
+/**
+* Creates the Adder-Method for a toMany association
+*/
+«DEFINE associationCollectionAdder FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationAdder(this) FOR association»
+	public void addTo«name.toFirstUpper()»(«type.fqName()» «type.name.toFirstLower()»){
+		this.«name».add(«type.name.toFirstLower()»);
+	}
+«ENDDEFINE»
+
+/**
+* Creates the RemoveFrom-Method for a toMany association
+*/
+«DEFINE associationCollectionRemoveFrom FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationRemoveFrom(this) FOR association»
+	public void removeFrom«name.toFirstUpper()»(«type.fqName()» «type.name.toFirstLower()»){
+		this.«name».remove(«type.name.toFirstLower()»);
+	}
+«ENDDEFINE»
+
+/**
+* Creates the RemoveAll-Method for a toMany association
+*/
+«DEFINE associationCollectionRemoveAll FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationRemoveAll(this) FOR association»
+	public void removeAllFrom«name.toFirstUpper()»(){
+		this.«name».clear();
+	}
+«ENDDEFINE»
+
+/**
+* Creates the Getter-Method for a 1-1 association
+*/
+«DEFINE associationGetter FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationGetter(this) FOR association»
+	public «type.fqName()» «toGetter()»(){
+		return «name»;
+	}
+«ENDDEFINE»
+
+/**
+* Creates the Setter-Method for a 1-1 association
+*/
+«DEFINE associationSetter FOR uml::Property»
+	«EXPAND Documentation::documentationAssociationSetter(this) FOR association»
+	public void «toSetter()»(«type.fqName()» «name»){
+		this.«name» = «name»;
+	}
+«ENDDEFINE»

@@ -1,0 +1,23 @@
+«EXTENSION xtend::Helper»
+«EXTENSION xtend::Properties»
+
+/**
+* Creates a JAVA Interface with full support of generalization
+*/
+«DEFINE interface FOR uml::Interface»
+	«FILE getFQNPackagePath()+"/"+name+".java"»
+		«getTypeHeader()»
+		
+		package «getFQNPackageName()»;
+		«EXPAND Documentation::documentation»
+		public interface «name» «IF isException(this)»extends«IF isExceptionChecked(this)»java.lang.Throwable«ELSE»java.lang.RuntimeException«ENDIF»«ENDIF»
+			«EXPAND Generalization::generalization»{
+			«EXPAND Attribute::staticAttribute»
+			«EXPAND Attribute::getterSetterInterface FOREACH attribute.select(a|!a.isStatic)»
+			«EXPAND Operation::operationInterface FOREACH this.getOperations()»
+			«EXPAND Association::accessorsInterface FOREACH this.getAssociations().ownedEnd.select(e|e.type.name!=name)»
+		}
+		
+		«getTypeFooter()»
+	«ENDFILE»
+«ENDDEFINE»

@@ -1,0 +1,126 @@
+«EXTENSION xtend::Helper»
+«EXTENSION xtend::Properties»
+«EXTENSION xtend::Names»
+«EXTENSION xtend::SerialVersionUID»
+«EXTENSION xtend::DataType»
+«EXTENSION xtend::AssociationHelper»
+
+«DEFINE neoClass FOR uml::Class»
+	«FILE "Neo4j/"+name +".java"»
+		«EXPAND classContentSimple FOR this»
+	«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE classContentSimple FOR uml::Class»
+import org.neo4j.driver.v1.*;
+public «IF isAbstract» abstract «ENDIF-» class «name»
+«EXPAND Generalization::generalization»
+«EXPAND Realization::realization»{
+    //id String to identify Unique Neo4j Nodes
+	private final String id;
+	
+	//regular class properties as designed
+	«EXPAND Attribute::field FOREACH getAllProperties()-»
+    «EXPAND Attribute::staticAttribute-»
+    
+    //standard constructor setting the id using java random unique id function
+    public «name»(){
+    	id = java.util.UUID.randomUUID().toString();
+    }
+    
+	//CRUD
+	«EXPAND createStmt»
+	«EXPAND readStmt»
+	«EXPAND updateStmt»
+	«EXPAND deleteStmt»
+	
+	//getter+setter
+	«EXPAND Attribute::getterSetter»
+	public String getId(){
+		return id;
+	}
+}
+«ENDDEFINE»
+
+«DEFINE createStmt FOR uml::Class»
+	public void create«name»(){
+		Driver driver = GraphDatabase.driver( "bolt://localhost", AuthTokens.basic( "USERNAME", "PWD" ) );
+		Session session = driver.session();
+		session.run("CREATE (a:«name» {id: \""+ id + "\"«EXPAND nodeProps FOREACH ownedAttribute.select(e|e.association == null)-»})" );
+		«EXPAND nodeRels FOREACH ownedAttribute-»
+		session.close();
+		driver.close();
+	}
+«ENDDEFINE»
+
+«DEFINE readStmt FOR uml::Class»
+	public StatementResult read«name»(){
+		Driver driver = GraphDatabase.driver( "bolt://localhost", AuthTokens.basic( "USERNAME", "PWD" ) );
+		Session session = driver.session();
+		StatementResult result = session.run("MATCH (a:«name» {id: \"" + id + "\"}) return a");
+		session.close();
+		driver.close();
+		return result;
+	}
+«ENDDEFINE»
+
+«DEFINE updateStmt FOR uml::Class»
+	public void update«name»(){
+		Driver driver = GraphDatabase.driver( "bolt://localhost", AuthTokens.basic( "USERNAME", "PWD" ) );
+		Session session = driver.session();
+		«EXPAND updateProps FOREACH ownedAttribute.select(e|e.association == null)-»
+		«EXPAND updateRels FOREACH ownedAttribute-»
+		session.close();
+		driver.close();
+	}
+«ENDDEFINE»
+
+«DEFINE deleteStmt FOR uml::Class»
+	public void delete«name»(){
+		Driver driver = GraphDatabase.driver( "bolt://localhost", AuthTokens.basic( "USERNAME", "PWD" ) );
+		Session session = driver.session();
+		session.run("MATCH (a:«name» {id: \"" + id + "\"}) DELETE a");
+		session.close();
+		driver.close();
+	}
+«ENDDEFINE»
+
+«DEFINE nodeProps FOR uml::Property», «name»: «EXPAND StringQuotes-»" + «name» + "«EXPAND StringQuotes-»«ENDDEFINE»
+
+«DEFINE nodeRels FOR uml::Property-»
+		«IF this.isAssociation()-»
+			«IF this.isOutgoing()-»
+				«IF isToManyAssociation()-»
+			for( «getPropertyType()» i : «name» ){	
+				session.run("MATCH (a:«this.association.memberEnd.get(0).name.toFirstUpper()» {id: \""+ id +"\"}) MATCH (b:«name.toFirstUpper()» {id: \"" + i.getId() + "\"})"
+						+ "CREATE (a)-[:«this.association.name»]->(b)");
+			}
+				«ELSE-»
+			session.run("MATCH (a:«this.association.memberEnd.get(0).name.toFirstUpper()» {id: \""+ id +"\"}) MATCH (b:«name.toFirstUpper()» {id: \"" + «name».getId() + "\"})"
+					+ "CREATE (a)-[:«this.association.name»]->(b)");
+				«ENDIF-»
+			«ENDIF-»
+		«ENDIF-»
+«ENDDEFINE-»
+
+ «DEFINE updateProps FOR uml::Property-»
+ 		session.run("MATCH (a:«class.name» {id:\"" +id+ "\"}) SET a.«name» =«EXPAND StringQuotes-»" + «name» + "«EXPAND StringQuotes-»);
+ «ENDDEFINE-»
+ 
+ «DEFINE updateRels FOR uml::Property-»
+ 		«IF this.isAssociation()-»
+			«IF this.isOutgoing()-»
+				«IF isToManyAssociation()-»
+		for( «getPropertyType()» i : «name» ){	
+				session.run("MATCH (a:«this.association.memberEnd.get(0).name.toFirstUpper()» {id: \""+ id +"\"}) MATCH (b:«name.toFirstUpper()» {id: \"" + i.getId() + "\"})"
+						+ "MERGE (a)-[:«this.association.name»]->(b)");
+			}
+				«ELSE-»
+		session.run("MATCH (a:«this.association.memberEnd.get(0).name.toFirstUpper()» {id: \""+ id +"\"}) MATCH (b:«name.toFirstUpper()» {id: \"" + «name».getId() + "\"})"
+				+ "MERGE (a)-[:«this.association.name»]->(b)");
+				«ENDIF-»
+			«ENDIF-»
+		«ENDIF-»
+ «ENDDEFINE-»
+
+«DEFINE StringQuotes FOR uml::Property»«IF this.getPropertyType() == "java.lang.String"»\"«ENDIF»«ENDDEFINE»
