@@ -1,0 +1,62 @@
+«EXTENSION xtend::Helper»
+«EXTENSION xtend::Properties»
+«EXTENSION xtend::Names»
+«EXTENSION xtend::SerialVersionUID»
+«EXTENSION xtend::DataType»
+«EXTENSION xtend::AssociationHelper»
+
+
+«DEFINE springMongoClass FOR uml::Class»
+	«FILE "SDM/"+name +".java"»
+		«EXPAND classContentSimple FOR this»
+	«ENDFILE»
+	«FILE "SDM/"+name+"Repository.java"»
+		«EXPAND repoContent FOR this»
+	«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE classContentSimple FOR uml::Class»
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+public «IF isAbstract» abstract «ENDIF-» class «name»
+«EXPAND Generalization::generalization»
+«EXPAND Realization::realization»{
+    @Id
+    public String id;
+	//regular class properties as designed
+	«EXPAND annotatedProps FOREACH getAllProperties().select(e|e.association == null)-»
+    «EXPAND annotatedRels FOREACH getAllProperties()-»        
+    «EXPAND Attribute::staticAttribute-»
+    
+    //standard constructor 
+    public «name»(){
+    }
+    
+	
+	//getter+setter
+	«EXPAND Attribute::getterSetter»
+}
+«ENDDEFINE»
+
+«DEFINE annotatedProps FOR uml::Property»
+	«EXPAND Attribute::field FOR this-»
+«ENDDEFINE»
+
+«DEFINE annotatedStaticProps FOR uml::Class»
+	«EXPAND Attribute::staticAttribute FOR this-»
+«ENDDEFINE»
+
+«DEFINE annotatedRels FOR uml::Property-»
+	«IF this.isAssociation()-»
+		«IF this.isOutgoing()-»
+		@DBRef
+		«EXPAND Association::field FOR this-»
+		«ENDIF-»
+	«ENDIF-»
+«ENDDEFINE-»
+
+«DEFINE repoContent FOR uml::Class»
+import org.springframework.data.mongodb.repository.MongoRepository;
+public interface «name»Repository extends MongoRepository<«name», String>{
+}
+«ENDDEFINE»

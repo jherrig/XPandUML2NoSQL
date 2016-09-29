@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_SquBEBJXEdupw8SPRvQOEg" name="JavaBasic" metaclassReference="_4tC68ORIEdu39PYgr33iPQ _4tC69ORIEdu39PYgr33iPQ">
+  <eAnnotations xmi:id="_AydtoBJ5Edu-OL389vF1Hw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+    <contents xmi:type="ecore:EPackage" xmi:id="_4tC6-eRIEdu39PYgr33iPQ" name="JavaBasic" nsURI="http:///schemas/JavaBasic/_4tC6-ORIEdu39PYgr33iPQ/3" nsPrefix="JavaBasic">
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_4tC6-uRIEdu39PYgr33iPQ" name="Entity">
+        <eAnnotations xmi:id="_4tC6--RIEdu39PYgr33iPQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_WVdNcBJXEdupw8SPRvQOEg"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_4tC6_ORIEdu39PYgr33iPQ" name="isSerializable" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_4tC6_eRIEdu39PYgr33iPQ" name="base_Class" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_4tC6_uRIEdu39PYgr33iPQ" name="Exception">
+        <eAnnotations xmi:id="_4tC6_-RIEdu39PYgr33iPQ" source="http://www.eclipse.org/uml2/2.0.0/UML"/>
+        <eAnnotations xmi:id="_4tC7AORIEdu39PYgr33iPQ" source="duplicates">
+          <contents xmi:type="ecore:EReference" xmi:id="_4tC7AeRIEdu39PYgr33iPQ" name="base_Class" ordered="false" lowerBound="1">
+            <eAnnotations xmi:id="_4tC7AuRIEdu39PYgr33iPQ" source="redefines" references="_4tC7BORIEdu39PYgr33iPQ"/>
+            <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Class"/>
+          </contents>
+        </eAnnotations>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_4tC7A-RIEdu39PYgr33iPQ" name="isUnchecked" ordered="false" lowerBound="1" defaultValueLiteral="false">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_4tC7BORIEdu39PYgr33iPQ" name="base_Class" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+    <contents xmi:type="ecore:EPackage" xmi:id="_p_dsMeRIEdu39PYgr33iPQ" name="JavaBasic" nsURI="http:///schemas/JavaBasic/_p_dsMORIEdu39PYgr33iPQ/2" nsPrefix="JavaBasic">
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_p_dsMuRIEdu39PYgr33iPQ" name="Entity">
+        <eAnnotations xmi:id="_p_dsM-RIEdu39PYgr33iPQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_WVdNcBJXEdupw8SPRvQOEg"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_p_dsNORIEdu39PYgr33iPQ" name="isSerializable" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_p_dsNeRIEdu39PYgr33iPQ" name="base_Class" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_p_dsNuRIEdu39PYgr33iPQ" name="Exception">
+        <eAnnotations xmi:id="_p_dsN-RIEdu39PYgr33iPQ" source="http://www.eclipse.org/uml2/2.0.0/UML"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_p_dsOORIEdu39PYgr33iPQ" name="isUnchecked" ordered="false" lowerBound="1" defaultValueLiteral="false">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_p_dsOeRIEdu39PYgr33iPQ" name="base_Class" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+    <contents xmi:type="ecore:EPackage" xmi:id="_VBJfMeRIEdu39PYgr33iPQ" name="JavaBasic" nsURI="http:///schemas/JavaBasic/_VBJfMORIEdu39PYgr33iPQ/1" nsPrefix="JavaBasic">
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_VBJfMuRIEdu39PYgr33iPQ" name="Entity">
+        <eAnnotations xmi:id="_VBJfM-RIEdu39PYgr33iPQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_WVdNcBJXEdupw8SPRvQOEg"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_VBJfNORIEdu39PYgr33iPQ" name="isSerializable" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_VBJfNeRIEdu39PYgr33iPQ" name="base_Class" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_VBJfNuRIEdu39PYgr33iPQ" name="Exception">
+        <eAnnotations xmi:id="_VBJfN-RIEdu39PYgr33iPQ" source="http://www.eclipse.org/uml2/2.0.0/UML"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_VBJfOORIEdu39PYgr33iPQ" name="isUnchecked" ordered="false" lowerBound="1" defaultValueLiteral="false">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_VBJfOeRIEdu39PYgr33iPQ" name="base_Class" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+    <contents xmi:type="ecore:EPackage" xmi:id="_AydtoRJ5Edu-OL389vF1Hw" name="JavaBasic" nsURI="http:///schemas/JavaBasic/0" nsPrefix="JavaBasic">
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_AydtohJ5Edu-OL389vF1Hw" name="Entity">
+        <eAnnotations xmi:id="_AydtoxJ5Edu-OL389vF1Hw" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_WVdNcBJXEdupw8SPRvQOEg"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_AydtpBJ5Edu-OL389vF1Hw" name="isSerializable" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_AydtpRJ5Edu-OL389vF1Hw" name="base_Class" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/2.1.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <elementImport xmi:id="_4tC68ORIEdu39PYgr33iPQ">
+    <importedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+  </elementImport>
+  <elementImport xmi:id="_4tC69ORIEdu39PYgr33iPQ">
+    <importedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+  </elementImport>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_WVdNcBJXEdupw8SPRvQOEg" name="Entity">
+    <ownedAttribute xmi:id="_YlhyoBJXEdupw8SPRvQOEg" name="isSerializable">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_4tC69-RIEdu39PYgr33iPQ" name="base_Class" association="_4tC69eRIEdu39PYgr33iPQ">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+    </ownedAttribute>
+    <icon xmi:id="EClass-_icon.0" location="../icons/full/ovr16/EClass.gif"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_4tC68eRIEdu39PYgr33iPQ" name="Class_Exception" memberEnd="_4tC68uRIEdu39PYgr33iPQ">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_4tC68uRIEdu39PYgr33iPQ" name="extension_Exception" aggregation="composite" association="_4tC68eRIEdu39PYgr33iPQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_4tC69eRIEdu39PYgr33iPQ" name="Class_Entity" memberEnd="_4tC69uRIEdu39PYgr33iPQ _4tC69-RIEdu39PYgr33iPQ">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_4tC69uRIEdu39PYgr33iPQ" name="extension_Entity" type="_WVdNcBJXEdupw8SPRvQOEg" aggregation="composite" association="_4tC69eRIEdu39PYgr33iPQ"/>
+  </packagedElement>
+</uml:Profile>

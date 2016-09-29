@@ -1,0 +1,195 @@
+«EXTENSION xtend::Helper»
+«EXTENSION xtend::DataType»
+«EXTENSION xtend::Properties»
+«EXTENSION xtend::Names»
+
+/**
+* Creates the interface for the model class stereotyped as JavaBasic::Entity
+*/
+«DEFINE entityInterface FOR uml::Class»
+	«FILE getFQNPackagePath()+"/"+interfaceName(name)+".java"»
+		«EXPAND entityInterfaceFileContent»
+	«ENDFILE»
+«ENDDEFINE»
+
+/**
+* Creates the interface file content for the model class stereotyped as JavaBasic::Entity
+*/
+«DEFINE entityInterfaceFileContent FOR uml::Class»
+	«EXPAND head»
+	«EXPAND interfaceEntityDefine»
+		«EXPAND Attribute::staticAttribute»
+		«EXPAND Attribute::getterSetterInterface»
+		«EXPAND Operation::operationInterface FOREACH this.getOperations()»
+		«EXPAND Association::accessorsInterface FOREACH this.getAssociations().ownedEnd.select(e|e.type.name!=name)»
+	«EXPAND interfaceEntityEndDefine»
+«ENDDEFINE»
+
+/**
+*	Creates a abstract implementation for the stereotyped class JavaBasic::Entity
+*/
+«DEFINE entityAbstractClass FOR uml::Class»
+	«FILE getFQNPackagePath()+"/"+abstractClassName(name)+".java"»
+		«EXPAND entityAbstractClassFileContent»
+	«ENDFILE»
+«ENDDEFINE»
+/**
+*	Creates a abstract implementation file content for the stereotyped class
+JavaBasic::Entity
+*/
+«DEFINE entityAbstractClassFileContent FOR uml::Class»
+	«EXPAND head»
+	«EXPAND abstractClassEntityDefine»
+		«EXPAND Attribute::attribute»
+		«EXPAND Association::attribute»
+		«EXPAND Attribute::staticAttribute»
+
+		«EXPAND Attribute::getterSetter»
+		«IF getInterfaceOperationImplementationStrategy() == "use_abstract_method"»
+			«EXPAND Operation::operation(true)»
+		«ELSEIF getInterfaceOperationImplementationStrategy() == "none"»
+			«EXPAND Operation::operation»
+		«ENDIF»				
+		«EXPAND Association::accessors»
+		«EXPAND Class::overwriteHashcodeEqualsToString»
+	«EXPAND abstractClassEntityEndDefine»
+«ENDDEFINE»
+
+/**
+*	Creates a basic implementation for the stereotyped class JavaBasic::Entity
+*/
+«DEFINE entityBasicClass FOR uml::Class»
+	«FILE getFQNPackagePath()+"/"+implementationClassName(name)+".java" outletSrcOnceDir»
+		«EXPAND entityBasicClassFileContent»
+	«ENDFILE»
+«ENDDEFINE»
+/**
+*	Creates a basic implementation file content for the stereotyped class
+JavaBasic::Entity
+*/
+«DEFINE entityBasicClassFileContent FOR uml::Class»
+	«EXPAND head»
+	«EXPAND basicClassEntityDefine»
+	«EXPAND xpand::SerialVersionUID::serialVersionUIDField»
+	«IF getInterfaceOperationImplementationStrategy() == "use_abstract_method"»
+		«EXPAND Operation::operationBaseImpl(true)»	
+	«ELSEIF getInterfaceOperationImplementationStrategy() == "none"»
+		«EXPAND Operation::operationBaseImpl»
+	«ENDIF»			
+	«EXPAND basicClassEntityEndDefine»
+«ENDDEFINE»
+
+/**
+* Creates the head of the class.
+*/
+«DEFINE head FOR uml::Class»
+	«getTypeHeader()»
+	package «EXPAND getFQNPackageNameForEntity -»;
+	«EXPAND import»
+	«EXPAND Documentation::documentation»
+	«EXPAND classAnnotations»
+«ENDDEFINE»
+
+/**
+* Creates the interface definition. Used to enables aspects
+* to modify the definition of an interface with e.g. annotations
+*/
+«DEFINE interfaceEntityDefine FOR uml::Class»
+	public interface «interfaceName(name)»
+		«EXPAND Generalization::generalizationEntityInterface»
+		«EXPAND Realization::realizationEntityInterface»{
+«ENDDEFINE»
+
+/**
+* Creates the interface end definition. Used to enables aspects
+* to modify the definition of an interface with e.g. annotations
+*/
+«DEFINE interfaceEntityEndDefine FOR uml::Class»
+	}
+	
+	«getTypeFooter()»
+«ENDDEFINE»
+
+/**
+* Creates the abstract class definition. Used to enables aspects
+* to modify the definition of an abstract class with e.g. annotations
+*/
+«DEFINE abstractClassEntityDefine FOR uml::Class»
+	public abstract class «abstractClassName(name)»
+		«EXPAND Generalization::generalizationEntityAbstract» implements «interfaceName(name)»{
+«ENDDEFINE»
+
+/**
+* Creates the abstract class end definition. Used to enables aspects
+* to modify the definition of an interface with e.g. annotations
+*/
+«DEFINE abstractClassEntityEndDefine FOR uml::Class»
+	}
+	
+	«getTypeFooter()»
+«ENDDEFINE»
+
+/**
+* Creates the basic class definition. Used to enables aspects
+* to modify the definition of an basic class with e.g. annotations
+*/
+«DEFINE basicClassEntityDefine FOR uml::Class»
+	public class «implementationClassName(name)» extends «abstractClassName(name)» implements java.io.Serializable {
+«ENDDEFINE»
+
+/**
+* Creates the basic class end definition. Used to enables aspects
+* to modify the definition of an interface with e.g. annotations
+*/
+«DEFINE basicClassEntityEndDefine FOR uml::Class»
+	}
+	
+	«getTypeFooter()»
+«ENDDEFINE»
+
+«DEFINE getFQNPackagePathForEntity FOR uml::Class-»
+	«getFQNPackagePath()-»
+«ENDDEFINE»
+
+«DEFINE getFQNPackageNameForEntity FOR uml::Class»
+	«getFQNPackageName()-»
+«ENDDEFINE»
+
+«DEFINE entitySimpleStyle FOR uml::Class»
+	«FILE getFQNPackagePath()+"/"+entityName(this)+".java"»
+		«EXPAND classContentSimple»
+	«ENDFILE»
+	«IF isAbstract»
+		«EXPAND entityBasicClass»
+	«ENDIF»
+«ENDDEFINE»
+
+«DEFINE classContentSimple FOR uml::Class»
+	«getTypeHeader()»
+	
+	«EXPAND Class::package FOR this»
+	
+	«EXPAND Documentation::documentation»
+	public «IF isAbstract» abstract«ENDIF» class «entityName(this)»
+		«EXPAND Generalization::generalization»
+		«EXPAND Realization::realization»{
+		«EXPAND SerialVersionUID::serialVersionUIDField»
+		«EXPAND Attribute::attribute»
+		«EXPAND Association::attribute»		
+		«EXPAND Attribute::staticAttribute»
+		«EXPAND Attribute::getterSetter»
+		«EXPAND Operation::operation»	
+		«EXPAND Generalization::operation»
+		«EXPAND Association::accessors»
+		
+		«EXPAND Class::overwriteHashcodeEqualsToString»	
+	}
+		
+	«getTypeFooter()»
+«ENDDEFINE»
+
+/**
+* Empty definitions. Can be used as an anchor with aop.
+*/
+«DEFINE import FOR uml::Class»«ENDDEFINE»
+«DEFINE classAnnotations FOR uml::Class»«ENDDEFINE»

@@ -1,0 +1,20 @@
+«EXTENSION xtend::Helper»
+
+«DEFINE realization FOR uml::Class»
+    implements
+    «IF !interfaceRealization.isEmpty»
+    «FOREACH interfaceRealization AS ir SEPARATOR ","»
+        «((uml::Interface)ir.supplier.first()).fqName()»
+    «ENDFOREACH»,
+    «ENDIF»
+ java.io.Serializable
+«ENDDEFINE»
+
+«DEFINE realizationEntityInterface FOR uml::Class»
+    «IF !interfaceRealization.isEmpty»
+    extends
+    «FOREACH interfaceRealization AS ir SEPARATOR ","»
+        «((uml::Interface)ir.supplier.first()).fqName()»
+    «ENDFOREACH»
+    «ENDIF»
+«ENDDEFINE»
