@@ -1,0 +1,6 @@
+
+pet
+pet_owner_1
+function a () {
+    foo-pet_owner_1
+}
