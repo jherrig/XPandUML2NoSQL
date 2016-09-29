@@ -1,3 +1,0 @@
-String getSerialVersionUID(uml::Class class):
-	JAVA de.ul.generator.SerialVersionUID.computeSerialVersionUID(org.eclipse.uml2.uml.Class);
-

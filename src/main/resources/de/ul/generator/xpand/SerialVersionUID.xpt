@@ -1,9 +1,0 @@
-«EXTENSION xtend::Properties»
-
-«EXTENSION xtend::SerialVersionUID»
-
-«DEFINE serialVersionUIDField FOR uml::Class»
-	«IF generateSerialVersionUIDField()»
-	private final static long serialVersionUID = «getSerialVersionUID()»L;
-	«ENDIF»
-«ENDDEFINE»
